@@ -1,0 +1,63 @@
+import React from 'react';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
+import InserirScreen from '../screens/InserirScreen';
+import BuscarScreen from '../screens/BuscarScreen';
+import AtualizarScreen from '../screens/AtualizarScreen';
+import ExcluirScreen from '../screens/ExcluirScreen';
+
+const Tab = createBottomTabNavigator();
+
+export default function TabNavigator() {
+  return (
+    <Tab.Navigator
+      screenOptions={{
+        tabBarStyle: {
+          backgroundColor: '#000',
+          borderTopColor: '#222',
+        },
+        tabBarActiveTintColor: '#FF69B4',
+        tabBarInactiveTintColor: '#666',
+        headerShown: false,
+      }}
+    >
+      <Tab.Screen
+        name="Inserir"
+        component={InserirScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="account-plus" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Buscar"
+        component={BuscarScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="account-search" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Atualizar"
+        component={AtualizarScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="account-edit" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Excluir"
+        component={ExcluirScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="account-remove" color={color} size={size} />
+          ),
+        }}
+      />
+    </Tab.Navigator>
+  );
+}
