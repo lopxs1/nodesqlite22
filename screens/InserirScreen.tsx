@@ -23,9 +23,9 @@ export default function InserirScreen() {
 
   const inputTheme = {
     colors: {
-      text: '#fff',         // texto digitado
-      primary: '#fff',      // cor do contorno e label quando focado
-      placeholder: '#ccc',  // cor do label quando não focado
+      text: '#fff',
+      primary: '#fff',
+      placeholder: '#ccc',
     },
   };
 
@@ -35,22 +35,20 @@ export default function InserirScreen() {
     onChangeText: (text: string) => void,
     keyboardType: 'default' | 'email-address' | 'phone-pad',
     id: string
-  ) => {
-    return (
-      <TextInput
-        label={label}
-        value={value}
-        onChangeText={onChangeText}
-        mode="outlined"
-        keyboardType={keyboardType}
-        style={styles.input}
-        textColor="#fff"
-        onFocus={() => setFocusedInput(id)}
-        onBlur={() => setFocusedInput(null)}
-        theme={inputTheme}
-      />
-    );
-  };
+  ) => (
+    <TextInput
+      label={label}
+      value={value}
+      onChangeText={onChangeText}
+      mode="outlined"
+      keyboardType={keyboardType}
+      style={styles.input}
+      textColor="#fff"
+      onFocus={() => setFocusedInput(id)}
+      onBlur={() => setFocusedInput(null)}
+      theme={inputTheme}
+    />
+  );
 
   return (
     <View style={styles.container}>
@@ -61,7 +59,11 @@ export default function InserirScreen() {
       {renderInput('Telefone', telefone, setTelefone, 'phone-pad', 'telefone')}
 
       <View style={styles.buttonWrapper}>
-        <GradientButton label="Inserir" onPress={handleInserir} />
+        <GradientButton
+          label="Inserir"
+          onPress={handleInserir}
+          colors={['#6A0DAD', '#FF69B4', '#FFDAB9']}
+        />
       </View>
     </View>
   );
@@ -84,9 +86,9 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: '#000',
     borderRadius: 6,
-    marginBottom: 16, // espaçamento entre inputs
+    marginBottom: 16,
   },
   buttonWrapper: {
-    marginTop: 24, // espaçamento entre último input e botão
+    marginTop: 24,
   },
 });

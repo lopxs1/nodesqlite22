@@ -4,8 +4,6 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import InserirScreen from '../screens/InserirScreen';
 import BuscarScreen from '../screens/BuscarScreen';
-import AtualizarScreen from '../screens/AtualizarScreen';
-import ExcluirScreen from '../screens/ExcluirScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -23,16 +21,7 @@ export default function TabNavigator() {
       }}
     >
       <Tab.Screen
-        name="Inserir"
-        component={InserirScreen}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="account-plus" color={color} size={size} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Buscar"
+        name="Ver Usuários"
         component={BuscarScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
@@ -41,20 +30,11 @@ export default function TabNavigator() {
         }}
       />
       <Tab.Screen
-        name="Atualizar"
-        component={AtualizarScreen}
+        name="Inserir Usuários"
+        component={InserirScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="account-edit" color={color} size={size} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Excluir"
-        component={ExcluirScreen}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="account-remove" color={color} size={size} />
+            <MaterialCommunityIcons name="account-plus" color={color} size={size} />
           ),
         }}
       />
