@@ -13,7 +13,7 @@ export default function GradientButton({
   colors: string[];
 }) {
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.85} style={{ flex: 1 }}>
+    <TouchableOpacity onPress={onPress} activeOpacity={0.85} style={styles.button}>
       <LinearGradient
         colors={colors}
         start={{ x: 0, y: 0 }}
@@ -27,6 +27,9 @@ export default function GradientButton({
 }
 
 const styles = StyleSheet.create({
+  button: {
+    alignSelf: 'stretch', // ou 'center', dependendo do layout
+  },
   gradient: {
     paddingVertical: 14,
     borderRadius: 12,
