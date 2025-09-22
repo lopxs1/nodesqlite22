@@ -2,24 +2,43 @@ import React, { useState } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
 import { TextInput, Text } from 'react-native-paper';
 import GradientButton from '../shared/GradientButton'; // ✅ Corrigido o caminho
+import { Conexao, inserirUsuario, createTable } from '../Conf/Banco';
 
 export default function InserirScreen() {
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
-  const [telefone, setTelefone] = useState('');
   const [focusedInput, setFocusedInput] = useState<string | null>(null);
 
-  const handleInserir = () => {
-    if (!nome || !email || !telefone) {
-      Alert.alert('Erro', 'Preencha todos os campos');
-      return;
-    }
+  // ... existing code ...
 
-    Alert.alert('Sucesso', `Usuário ${nome} inserido!`);
-    setNome('');
-    setEmail('');
-    setTelefone('');
-  };
+const handleInserir = async () => {
+  if (!nome || !email) {
+    Alert.alert('Erro', 'Preencha todos os campos');
+    return;
+  }
+
+  try {
+    // Criar conexão com o banco
+    const db = await Conexao();
+    
+    if (db) {
+      // Criar tabela se não existir
+      await createTable(db);
+      
+      // Inserir usuário
+      await inserirUsuario(db, nome, email);
+      
+      Alert.alert('Sucesso', `Usuário ${nome} inserido com sucesso!`);
+      setNome('');
+      setEmail('');
+    }
+  } catch (error) {
+    console.error('Erro ao inserir usuário:', error);
+    Alert.alert('Erro', 'Não foi possível inserir o usuário. Tente novamente.');
+  }
+};
+
+// ... existing code ...
 
   const inputTheme = {
     colors: {
@@ -33,7 +52,7 @@ export default function InserirScreen() {
     label: string,
     value: string,
     onChangeText: (text: string) => void,
-    keyboardType: 'default' | 'email-address' | 'phone-pad',
+    keyboardType: 'default' | 'email-address',
     id: string
   ) => (
     <TextInput
@@ -56,7 +75,6 @@ export default function InserirScreen() {
 
       {renderInput('Nome', nome, setNome, 'default', 'nome')}
       {renderInput('Email', email, setEmail, 'email-address', 'email')}
-      {renderInput('Telefone', telefone, setTelefone, 'phone-pad', 'telefone')}
 
       <View style={styles.buttonWrapper}>
         <GradientButton
