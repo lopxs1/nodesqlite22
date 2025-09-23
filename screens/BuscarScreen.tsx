@@ -1,4 +1,3 @@
-// screens/BuscarScreen.tsx
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, FlatList, Text, TouchableOpacity, Modal, StyleSheet, Alert, ScrollView } from 'react-native';
 import { Card, Button, TextInput } from 'react-native-paper';
@@ -18,11 +17,13 @@ export default function BuscarScreen() {
     try {
       setLoading(true);
       const db = await Conexao();
-      if (db) {
-        await createTable(db);
-        const result = await selectUsuario(db);
-        setUsers(result || []);
+      if (!db) {
+        Alert.alert('Erro', 'Falha ao conectar ao banco de dados.');
+        return;
       }
+      await createTable(db);
+      const result = await selectUsuario(db);
+      setUsers(result || []);
     } catch (error) {
       console.error('Erro ao carregar usuários:', error);
       Alert.alert('Erro', 'Não foi possível carregar os usuários');
@@ -58,12 +59,14 @@ export default function BuscarScreen() {
 
     try {
       const db = await Conexao();
-      if (db) {
-        await updateUsuario(db, editingUser.ID_US, editNome.trim(), editEmail.trim());
-        Alert.alert('Sucesso', 'Usuário atualizado com sucesso!');
-        setEditingUser(null);
-        loadUsers(); // Recarregar lista
+      if (!db) {
+        Alert.alert('Erro', 'Falha ao conectar ao banco de dados.');
+        return;
       }
+      await updateUsuario(db, editingUser.ID_US, editNome.trim(), editEmail.trim());
+      Alert.alert('Sucesso', 'Usuário atualizado com sucesso!');
+      setEditingUser(null);
+      loadUsers(); // Recarregar lista
     } catch (error) {
       console.error('Erro ao atualizar usuário:', error);
       Alert.alert('Erro', 'Não foi possível atualizar o usuário');
@@ -71,33 +74,40 @@ export default function BuscarScreen() {
   };
 
   // Função para excluir usuário
-  const handleDeleteUser = (user: any) => {
-    Alert.alert(
-      'Confirmar Exclusão',
-      `Deseja realmente excluir o usuário ${user.NOME_US}?`,
-      [
-        { text: 'Cancelar', style: 'cancel' },
-        { 
-          text: 'Excluir', 
-          style: 'destructive',
-          onPress: async () => {
-            try {
-              const db = await Conexao();
-              if (db) {
-                await deleteUsuario(db, user.ID_US);
-                Alert.alert('Sucesso', 'Usuário excluído com sucesso!');
-                setSelectedUser(null); // <- ADICIONAR ESTA LINHA
-                loadUsers(); // Recarregar lista
-              }
-            } catch (error) {
-              console.error('Erro ao excluir usuário:', error);
-              Alert.alert('Erro', 'Não foi possível excluir o usuário');
+  // ... existing code ...
+
+const handleDeleteUser = (user: any) => {
+  Alert.alert(
+    'Confirmar Exclusão',
+    `Deseja realmente excluir o usuário ${user.NOME_US}?`,
+    [
+      { text: 'Cancelar', style: 'cancel' },
+      { 
+        text: 'Excluir', 
+        style: 'destructive',
+        onPress: async () => {
+          try {
+            const db = await Conexao();
+            if (!db) {
+              Alert.alert('Erro', 'Falha ao conectar ao banco de dados.');
+              return;
             }
+            await deleteUsuario(db, user.ID_US);
+            Alert.alert('Sucesso', 'Usuário excluído com sucesso!');
+            setSelectedUser(null);
+            loadUsers(); // Recarregar lista
+          } catch (error) {
+            console.error('Erro ao excluir usuário:', error);
+            Alert.alert('Erro', 'Não foi possível excluir o usuário. Tente novamente.');
           }
         }
-      ]
-    );
-  };
+      }
+    ]
+  );
+};
+
+// ... existing code ...
+
 
   const inputTheme = {
     colors: {
